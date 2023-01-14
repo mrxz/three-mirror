@@ -1,0 +1,38 @@
+{
+  "name": "@fern-solutions/three-mirror",
+  "version": "0.1.0",
+  "description": "Mirror object for Three.js (XR compatible)",
+  "module": "dist/three-mirror.esm.min.js",
+  "browser": "dist/three-mirror.umd.min.js",
+  "main": "dist/three-mirror.esm.min.js",
+  "author": "Noeri Huisman",
+  "license": "MIT",
+  "scripts": {
+    "dev": "concurrently \"rollup -c -w\" \"live-server --port=4000 --no-browser ./example --mount=/js:./dist\"",
+    "build": "rollup -c",
+    "watch": "rollup -c -w"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mrxz/three-mirror"
+  },
+  "bugs": {
+    "url": "https://github.com/mrxz/three-mirror/issues"
+  },
+  "homepage": "https://github.com/mrxz/three-mirror",
+  "keywords": [
+    "three",
+    "vr",
+    "xr",
+    "webxr"
+  ],
+  "files": [
+    "dist"
+  ],
+  "devDependencies": {
+    "@compodoc/live-server": "1.2.3",
+    "concurrently": "^7.1.0",
+    "rollup": "^2.71.1",
+    "rollup-plugin-terser": "^7.0.2"
+  }
+}
