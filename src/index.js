@@ -19,7 +19,7 @@ export class Mirror extends THREE.Mesh {
 		this.material = material;
 
 		const clippingPlane = new THREE.Plane();
-		const tempCameras = [new THREE.PerspectiveCamera(), new THREE.PerspectiveCamera()];
+		const tempCameras = [new THREE.PerspectiveCamera(), new THREE.PerspectiveCamera(), new THREE.PerspectiveCamera()];
 		const _reflectionMatrix = new THREE.Matrix4();
 		const _normal = new THREE.Vector3();
 		const _mirrorPos = new THREE.Vector3();
@@ -143,11 +143,9 @@ export class Mirror extends THREE.Mesh {
 				if(renderer.xr.isPresenting) {
 					// Use temp-cameras to store camera matrices
 					const cameras = sceneCamera.cameras;
+					tempCameras[2].copy(sceneCamera);
 					for(let i = 0; i < cameras.length; i++) {
-						tempCameras[i].matrixWorld.copy(cameras[i].matrixWorld);
-						tempCameras[i].matrixWorldInverse.copy(cameras[i].matrixWorldInverse);
-						tempCameras[i].projectionMatrix.copy(cameras[i].projectionMatrix);
-						tempCameras[i].layers.mask = cameras[i].layers.mask;
+						tempCameras[i].copy(cameras[i]).matrixWorld.copy(cameras[i].matrixWorld);
 
 						cameras[i].matrixWorld.premultiply(reflectionMatrix);
 						cameras[i].matrixWorldInverse.copy(cameras[i].matrixWorld).invert();
@@ -205,11 +203,9 @@ export class Mirror extends THREE.Mesh {
 			// Note: this is only really needed if you have multiple mirrors in a scene
 			if(renderer.xr.isPresenting) {
 				const cameras = sceneCamera.cameras;
+				sceneCamera.copy(tempCameras[2]);
 				for(let i = 0; i < cameras.length; i++) {
-					cameras[i].matrixWorld.copy(tempCameras[i].matrixWorld);
-					cameras[i].matrixWorldInverse.copy(tempCameras[i].matrixWorldInverse);
-					cameras[i].projectionMatrix.copy(tempCameras[i].projectionMatrix);
-					cameras[i].layers.mask = tempCameras[i].layers.mask;
+					cameras[i].copy(tempCameras[i]);
 				}
 			}
 		}
