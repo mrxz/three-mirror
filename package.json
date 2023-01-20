@@ -1,6 +1,6 @@
 {
   "name": "@fern-solutions/three-mirror",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Mirror object for Three.js (XR compatible)",
   "module": "dist/three-mirror.esm.min.js",
   "browser": "dist/three-mirror.umd.min.js",
