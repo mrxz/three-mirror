@@ -116,10 +116,17 @@ export class Mirror extends THREE.Mesh {
 			const d = -mirrorPos.dot(n);
 			clippingPlane.set(n, d);
 
+			// Use temp-cameras to store camera matrices
+			const cameras = sceneCamera.cameras;
+			
 			// Make sure the mirror can be seen
 			let visible;
 			if(renderer.xr.isPresenting) {
-				const cameras = sceneCamera.cameras;
+				tempCameras[2].copy(sceneCamera);
+				for(let i = 0; i < cameras.length; i++) {
+					tempCameras[i].copy(cameras[i]).matrixWorld.copy(cameras[i].matrixWorld);
+				}
+
 				_cameraLPos.setFromMatrixPosition(cameras[0].matrixWorld);
 				_cameraRPos.setFromMatrixPosition(cameras[1].matrixWorld);
 				visible =
@@ -141,12 +148,7 @@ export class Mirror extends THREE.Mesh {
 
 				// Update camera(s) for rendering the 'mirror' world
 				if(renderer.xr.isPresenting) {
-					// Use temp-cameras to store camera matrices
-					const cameras = sceneCamera.cameras;
-					tempCameras[2].copy(sceneCamera);
 					for(let i = 0; i < cameras.length; i++) {
-						tempCameras[i].copy(cameras[i]).matrixWorld.copy(cameras[i].matrixWorld);
-
 						cameras[i].matrixWorld.premultiply(reflectionMatrix);
 						cameras[i].matrixWorldInverse.copy(cameras[i].matrixWorld).invert();
 					}
