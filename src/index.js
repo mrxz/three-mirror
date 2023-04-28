@@ -191,8 +191,17 @@ export class Mirror extends THREE.Mesh {
 				}
 				const oldAutoClear = renderer.autoClear;
 				renderer.autoClear = false;
+				// Note: since three.js r152, XR sessions now force clear regardless of autoClear.
+				// To workaround this, temporarily disable clearing of color and stencil manually.
+				// See: https://github.com/mrdoob/three.js/issues/25955
+				const oldAutoClearColor = renderer.autoClearColor;
+				const oldAutoClearStencil = renderer.oldAutoClearStencil;
+				renderer.autoClearColor = false;
+				renderer.autoClearStencil = false;
 				renderer.render(scene, sceneCamera);
 				renderer.autoClear = oldAutoClear;
+				renderer.autoClearColor = oldAutoClearColor;
+				renderer.autoClearStencil = oldAutoClearStencil;
 
 				renderer.state.buffers.stencil.setLocked(false);
 				renderer.state.setMaterial = oldWebGLStateSetMaterialFn;
